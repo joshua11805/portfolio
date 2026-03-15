@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const cards = document.querySelectorAll('.project-card');
   const modal = document.getElementById('project-modal');
   const modalTitle = document.querySelector('#modal-body h3');
-  const modalImg = document.getElementById('modal-image');
   const modalDesc = document.getElementById('modal-description');
   const closeBtn = document.querySelector('.close-btn');
 
@@ -29,22 +28,62 @@ document.addEventListener("DOMContentLoaded", () => {
     appearOnScroll.observe(fader);
   });
 
-  
+  // Auto-generate title bars from data-title
+  cards.forEach(card => {
+    const title = card.dataset.title;
+    const titleBar = document.createElement('div');
+    titleBar.classList.add('project-title-bar');
+    titleBar.textContent = title;
+    card.appendChild(titleBar);
+  });
+
+  // Open modal
   cards.forEach(card => {
     card.addEventListener('click', () => {
       modalTitle.textContent = card.dataset.title || 'No title';
-      modalImg.src = card.dataset.img || '';
       modalDesc.textContent = card.dataset.description || 'No description';
+
+      const mediaContainer = document.getElementById('modal-media');
+      const videoSrc = card.dataset.video;
+
+      if (videoSrc) {
+        if (videoSrc.includes('youtube') || videoSrc.includes('vimeo')) {
+          mediaContainer.innerHTML = `
+            <iframe 
+              src="${videoSrc}" 
+              width="100%" 
+              height="315" 
+              frameborder="0" 
+              allowfullscreen
+              style="border-radius: 8px; margin-top: 1rem;">
+            </iframe>`;
+        } else {
+          mediaContainer.innerHTML = `
+            <video controls width="100%" style="border-radius: 8px; margin-top: 1rem;">
+              <source src="${videoSrc}" type="video/mp4">
+            </video>`;
+        }
+      } else {
+        mediaContainer.innerHTML = `
+          <img src="${card.dataset.img}" alt="Project" 
+               style="width:100%; border-radius:8px; margin-top:1rem;">`;
+      }
+
       modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden'; // lock background scroll
     });
   });
 
-  closeBtn.addEventListener('click', () => {
+  // Close modal
+  function closeModal() {
     modal.style.display = 'none';
-  });
+    document.body.style.overflow = '';  // restore background scroll
+    document.getElementById('modal-media').innerHTML = ''; // stop video
+  }
 
+  closeBtn.addEventListener('click', closeModal);
   window.addEventListener('click', (e) => {
-    if (e.target === modal) modal.style.display = 'none';
+    if (e.target === modal) closeModal();
   });
 
 

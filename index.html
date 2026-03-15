@@ -14,8 +14,8 @@
     <header id="splash">
         <canvas id="splash-canvas"></canvas>
         <div class="splash-content">
-          <h1>Give me job...pls T-T</h1>
-          <p>iOS Developer & Game Programmer</p>
+          <h1>Joshua Shin</h1>
+          <p>Game and Engine Programmerr</p>
         </div>
     </header>  
 
@@ -28,13 +28,13 @@
       <div class="about-text">
         <h2>About Me</h2>
         <p>
-          Hey, I’m Joshua — a CS Game major who thrives on building sleek, efficient iOS apps and experimenting with immersive game mechanics.
+          I’m Joshua — a junior majoring in CS Game at USC.
         </p>
         <p>
-          I’ve collaborated on indie game projects and iOS tools using Xcode and SwiftUI, and I’m always eager to learn new tools that bridge design and logic.
+          I've done projects ranging from iOS to VR development, but my ultimate goal is to become a Graphics Engineer!
         </p>
         <p class="tech-tags">
-          <span>Swift</span><span>Xcode</span><span>iOS Dev</span><span>Game Dev</span><span>Unity</span><span>SwiftUI</span>
+          <span>C++</span><span>Game Dev</span><span>Unity</span><span>SDL</span><span>HLSL/Metal</span><span>Xcode/SwiftUI</span><span>Git/Perforce</span>
         </p>
       </div>
     </div>
@@ -48,24 +48,21 @@
     <div class="project-grid">
       <!-- Example Project -->
       <div class="project-card"
-           data-title="iOS Weather App"
-           data-img="images/project1.png"
+           data-title="Engine Rendering"
+           data-img="images/Engine Lighting.png"
            data-description="An iOS app built in SwiftUI with live weather forecasts, animations, and custom UI.">
-        <img src="../temp/562aff0cf5ec3598fe4fd3554f45abfb.jpg" alt="Weather App Screenshot">
+        <img src="images/Engine Lighting.png" alt="Engine Rendering Screenshot">
         <div class="project-info">
-          <h3>wuts a vector?</h3>
-          <p>I wore my name tag upside-down—
-            a scarlet badge of shame and clown.
-            Spoke too loud, then tripped on air,
-            the floor applauded my lack of flair.</p>
+          <h3>Graphics Engine</h3>
+          <p>A Game Engine I'm working for class. The engine is from scratch and I'm using SDL to implement the render pipeline. So far, I've implemented basic rendering, lighting, and shading.</p>
         </div>
       </div>
 
       <div class="project-card"
-           data-title="iOS Weather App"
-           data-img="images/project1.png"
+           data-title="Portal (C++)"
+           data-img="images/Lab10.png"
            data-description="An iOS app built in SwiftUI with live weather forecasts, animations, and custom UI.">
-        <img src="../temp/f8f243ae2d84ba3ca72f7f1abd6a2dbe.jpg" alt="Weather App Screenshot">
+        <img src="images/Lab10.png" alt="Portal Screenshot">
         <div class="project-info">
           <h3>iOS Generric app</h3>
           <p>Yet there's a charm to the misstep—
@@ -77,10 +74,10 @@
 
 
       <div class="project-card"
-           data-title="iOS Weather App"
-           data-img="images/project1.png"
+           data-title="Mario Kart (C++)"
+           data-img="images/8.png"
            data-description="An iOS app built in SwiftUI with live weather forecasts, animations, and custom UI.">
-        <img src="../temp/562aff0cf5ec3598fe4fd3554f45abfb.jpg" alt="Weather App Screenshot">
+        <img src="images/Lab08.png" alt="Mario Kart Screenshot">
         <div class="project-info">
           <h3>iOS Weather App</h3>
           <p>I met you in a glowing box,
@@ -92,10 +89,10 @@
 
 
       <div class="project-card"
-           data-title="iOS Weather App"
-           data-img="images/project1.png"
-           data-description="An iOS app built in SwiftUI with live weather forecasts, animations, and custom UI.">
-        <img src="../temp/562aff0cf5ec3598fe4fd3554f45abfb.jpg" alt="Weather App Screenshot">
+           data-title="Mario (C++)"
+           data-img="images/Lab04.png"
+           data-description="Class Project for building gamified brand demos">
+        <img src="images/Lab04.png" alt="Mario Screenshot">
         <div class="project-info">
           <h3>YOOBUU</h3>
           <p>My friends all laugh—“You love a bot?”
@@ -104,22 +101,43 @@
             you know my favs, from socks to shows.</p>
         </div>
       </div>
+
+      <div class="project-card"
+          data-title="BMW Racing Demo (Unity)"
+          data-img="images/BMW Racing Demo.png"
+          data-description="Class Project for building gamified brand demos">
+      <img src="images/BMW Racing Demo.png" alt="BMW Racing Demo">
+      <div class="project-info">
+        <h3>BMW Racing Demo</h3>
+        <p>A gamified brand demo built in Unity.</p>
+      </div>
+    </div>
+
+    <div class="project-card"
+          data-title="Shape Shifters (Unity)"
+          data-img="images/Shape Shifters.png"
+          data-description="Class Project for building gamified brand demos">
+      <img src="images/Shape Shifters.png" alt="Shape Shifters Screenshot">
+      <div class="project-info">
+        <h3>Shape Shifters</h3>
+        <p>A class project built in Unity.</p>
+      </div>
+    </div>
       
       <!-- Add more project cards similarly -->
     </div>
   </section>
 
-
-   <!-- Modal for project details -->
-   <div id="project-modal" class="modal">
-    <div class="modal-content">
-      <span class="close-btn">&times;</span>
-      <div id="modal-body">
-        <h3>WAAAAAAA</h3>
-        <img src="../temp/sticker.png" alt="Project Image" id="modal-image">
-        <p id="modal-description">Detailed description goes here...</p>
-      </div>
+<!-- Modal for project details -->
+<div id="project-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <div id="modal-body">
+      <h3>Project Title</h3>
+      <div id="modal-media"></div>
+      <p id="modal-description">Detailed description goes here...</p>
     </div>
+  </div>
 </div>
 
 
@@ -131,11 +149,11 @@
       <div class="contact-links">
         <a href="mailto:john.doe@example.com" class="contact-link">
           <i class="fas fa-envelope"></i>
-          john.doe@example.com
+          joshua11805@gmail.com
         </a>
         <a href="https://github.com/johndoe" target="_blank" class="contact-link">
           <i class="fab fa-github"></i>
-          github.com/johndoe
+          github.com/joshua11805
         </a>
       </div>
     </div>

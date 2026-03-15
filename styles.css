@@ -242,6 +242,17 @@
     transition: transform 0.3s ease;
     cursor: pointer;
   }
+
+  .project-card .project-title-bar {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  text-align: center;
+  padding: 0.6rem;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  border-top: 1px solid var(--border-color);
+}
   
   .project-card img {
     width: 100%;
