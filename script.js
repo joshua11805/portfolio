@@ -134,7 +134,7 @@ private:
         {
         title: "Overview",
         description: "A semester-long project done with a partner for my Intermediate Game Design class. Our biggest strength and constraint was that my partner and I were both programmers, so we ended up creating a fighting game in which players can alternate between three shapes: Circle, Triangle, and Square. The main aim is to deplete your opponents health by hitting them or knocking them into environmental damage. I was responsible for programming the player's movement and special abilities, as well as the applying the glow shader. My partner was primarily responsible for the UI, Scene Logic, and programming the environment.",
-        video: "videos/Shape Shifters Trailer.mp4"
+        video: "videos/Shape_Shifters_Trailer.mp4"
         }
       ]
     },
