@@ -9,127 +9,15 @@ document.addEventListener("DOMContentLoaded", () => {
     portal: {
       title: "Portal (C++)",
       subtitle: "C++ · SDL3 · 3D Graphics · OOP",
-      steps: [
-        {
-          title: "Component System & OOP Architecture",
-          description: "Game objects are represented by the base class Actor, which holds a transform and a list of components. This allows each actor to create the components it needs such as MeshComponent, CollisionComponent, CameraComponent, MovementComponents, and updates them every tick. This made it easy to mix and match behaviors without deep inheritance chains.",
-          code:
-`//Actor.h
-#pragma once
-#include "Transform.h"
-#include <vector>
-#include "Component.h"
-#include "SDL3/SDL_mouse.h"
-class Actor
-{
-public:
-	Transform& GetTransform() { return mTransform; }
-	const Transform& GetTransform() const { return mTransform; }
-	bool GetIsActive() const { return mIsActive; }
-	void SetIsActive(bool isActive) { mIsActive = isActive; }
-	void Destroy();
-	void Update(float deltaTime);
-	void Input(const bool keys[], SDL_MouseButtonFlags mouseButtons, const Vector2& relativeMouse);
-
-	//CreateComponent template function
-	template <typename T>
-	T* CreateComponent()
-	{
-		//create a new instance of type T, which should inherit from Component
-		// it takes in "this" because every
-		T* component = new T(this);
-
-		//add this component to our component vector
-		mComponents.emplace_back(component);
-		return component;
-	}
-
-	template <typename T>
-	T* GetComponent() const
-	{
-		//loop over all components
-		for (auto c : mComponents)
-		{
-			T* t = dynamic_cast<T*>(c);
-			if (t)
-			{
-				return t;
-			}
-		}
-		return nullptr;
-	}
-
-protected:
-	Transform mTransform;
-	//constructor
-	Actor() = default;
-	//destructor
-	virtual ~Actor()
-	{
-		for (Component* component : mComponents)
-		{
-			delete component;
-		}
-		mComponents.clear();
-	}
-
-	virtual void HandleUpdate(float deltaTime) {}
-	virtual void HandleInput(const bool keys[], SDL_MouseButtonFlags mouseButtons,
-							 const Vector2& relativeMouse)
-	{
-	}
-
-private:
-	std::vector<Component*> mComponents;
-	bool mIsActive = true;
-	friend class Game;
-};
-`
-        },
-        {
-          title: "Cross-Portal Rendering",
-          description: "CalcViewMatrix computes the virtual camera used to render what's visble through a portal. The core idea is that whatever the player sees through an try portal should look exactly as if they were standing at the exit portal. The function takes the player's world-space position and forward vector and maps them to where theyw ould be relative to the exit portal, preserving the spatial relationship. The up vector is taken directly from the exit portal's world transform so the virtual camera stays properly oriented.",
-          code:
-`void Portal::CalcViewMatrix(struct PortalData& portalData, Portal* exitPortal)
-{
-	//return if no exit portal exists
-	if (exitPortal == nullptr)
-	{
-		portalData.mView = Matrix4::CreateScale(0.0f);
-		return;
-	}
-
-	Player* player = gGame.GetPlayer();
-	CameraComponent* playerCam = player->GetComponent<CameraComponent>();
-	Vector3 playerPos = player->GetTransform().GetPosition();
-
-	//transform player pos to portal
-	Vector3 portalCamPos = GetPortalOutVector(playerPos, exitPortal, 1.0f);
-
-	//transform player cam forward vec
-	Vector3 portalCamForward = GetPortalOutVector(playerCam->GetCameraFoward(), exitPortal, 0.0f);
-
-	//portal view camera up should be Z axis of exit portal world transform mat
-	Vector3 portalCamUp = exitPortal->GetTransform().GetWorldTransform().GetZAxis();
-
-	//compute look at 50 units in front of camera
-	Vector3 lookAt = portalCamPos + portalCamForward * 50.0f;
-
-	Matrix4 viewMat = Matrix4::CreateLookAt(portalCamPos, lookAt, portalCamUp);
-
-	//asign portalData
-	portalData.mView = viewMat;
-	portalData.mCameraPos = portalCamPos;
-	portalData.mCameraForward = portalCamForward;
-	portalData.mCameraUp = portalCamUp;
-}`
-        },
-      ]
+      repo: "https://github.com/joshua11805/customEngine",
+      team: "Solo",
+      steps: []
     },
     shapeshifters:
     {
       title: "Shape Shifters (Unity)",
       subtitle: "Unity · C# ",
+      team: "2",
       steps: [
         {
         title: "Overview",
@@ -139,167 +27,30 @@ private:
       ]
     },
     engine: {
-      title: "Graphics Engine",
-      subtitle: "C++ · SDL · Rendering Pipeline",
-      steps: [
-        {
-          title: "Material System",
-          description: "HLSL Shaders are compiled at startup and stored by name in a map within the AssetCache class. The Materials class holds a shader pointer, texture array, and Lighting Data. The Mesh class holds a Vertex buffer and Material and the rendering, and the draw function sets the material active and calls VertexBuffer::Draw()",
-          code:
-`//Material.h
-#include <SDL3/SDL.h>
-#include <EngineMath.h>
-
-#include "Renderer.h"
-
-class Renderer;
-class Shader;
-class Texture;
-
-struct alignas(16) MaterialConstantsData
-{
-    Vector3 c_diffuseColor; //12 bytes
-    float _pad0; //4 bytes
-
-    Vector3 c_specularColor; // 12bytes
-    float c_specularPower; //4 bytes
-};
-
-class Material
-{
-public:
-    Material() = default;
-    ~Material() = default; //do nothing in destructor
-    MaterialConstantsData& GetConstants() { return m_constants; } //getters for data
-    const MaterialConstantsData& GetConstants() const { return m_constants; }
-    void SetActive(SDL_GPUCommandBuffer* commandBuffer, SDL_GPURenderPass* renderPass);
-    void SetShader(Shader* shader) { m_shader = shader; }
-    void SetTexture(int slot, const Texture* texture);
-    void SetDiffuseColor (const Vector3& diffColor) { m_constants.c_diffuseColor = diffColor; }
-    void SetSpecularColor(const Vector3& specColor) { m_constants.c_specularColor = specColor; }
-    void SetSpecularPower(float power) { m_constants.c_specularPower = power; }
-
-private:
-    MaterialConstantsData m_constants{};
-    Shader* m_shader = nullptr;
-    std::array<const Texture*, Renderer::TEXTURE_SLOT_TOTAL> m_textures{};
-};
-
-//Mesh.h
-#pragma once
-
-class AssetManager;
-class Material;
-class Renderer;
-class VertexBuffer;
-
-class Mesh {
-public:
-    Mesh(VertexBuffer* vertexBuffer, Material* material);
-    ~Mesh();
-
-    bool Load(void* vertexData, uint32_t vertexDataSize, void* indexData, uint32_t numIndex, uint32_t indexStride, Material* material);
-    bool Load(const char* fileName, AssetManager* pAssetManager);
-    static Mesh* StaticLoad(const char* fileName, AssetManager* pAssetManager);
-    bool IsSkinned() const { return m_isSkinned; }
-    void Draw(SDL_GPUCommandBuffer* commandBuffer, SDL_GPURenderPass* renderPass);
-
-protected:
-    bool m_isSkinned = false;
-    VertexBuffer* m_vertexBuffer = nullptr;
-    Material* m_material = nullptr;
-};
-
-//Mesh Draw Function
-void Mesh::Draw(SDL_GPUCommandBuffer* commandBuffer, SDL_GPURenderPass* renderPass)
-{
-    m_material->SetActive(commandBuffer, renderPass);
-    m_vertexBuffer->Draw(commandBuffer, renderPass);
-}
-`
-        },
-        {
-          title: "Lighting & Phong Shading",
-          description: "Lighting is computed per-fragment using the Phong model — ambient, diffuse, and specular terms. Light position, color, and intensity are passed as uniforms each frame. The specular highlight uses the reflected ray against the view direction for a realistic glossy look.",
-          code:
-`//Phong Shader
-#include "Constants.hlsl"
-
-struct VIn
-{
-    float3 position : POSITION0;
-    float3 normal : NORMAL0;
-    float2 uv : TEXCOORD0;
-};
-
-struct VOut
-{
-    float4 position : SV_POSITION;
-    float2 uv    : TEXCOORD0;
-    float3 normalWS : TEXCOORD1;
-    float3 worldPos : TEXCOORD2;
-};
-
-
-VOut VS(VIn vIn)
-{
-    VOut output;
-
-    float4 localPos = float4(vIn.position, 1.0f);
-    float4 worldPos = mul(localPos, c_modelToWorld);
-    float4 cameraPos = mul(worldPos, c_viewProj);
-
-    output.normalWS = mul(vIn.normal, (float3x3)c_modelToWorld);
-    output.worldPos = worldPos.xyz;
-    output.position = cameraPos;
-    output.uv = vIn.uv;
-
-    return output;
-}
-
-float4 PS(VOut pIn) : SV_TARGET
-{
-    float3 n = normalize(pIn.normalWS);
-    float3 accum = c_ambient;
-
-    for(int i = 0; i < MAX_POINT_LIGHTS; i++)
-    {
-        if(!c_pointLight[i].isEnabled)
-            continue;
-
-        float3 lToVec = pIn.worldPos - c_pointLight[i].position;
-        float dist = length(lToVec);
-
-        if(dist >= c_pointLight[i].outerRadius)
-            continue;
-
-        float3 lightDirection = -lToVec / max(dist, 0.0001f);
-        //diffuse
-        float nDotL = max(dot(n, lightDirection), 0.0f);
-
-        //specular
-        float3 viewDir = normalize(c_cameraPosition - pIn.worldPos);
-        float3 halfVec = normalize(lightDirection + viewDir);
-        float nDotH = max(dot(n, halfVec), 0.0f);
-        float spec = pow(nDotH, c_specularPower);
-
-        //attenuate
-        float att = 1.0f - smoothstep(c_pointLight[i].innerRadius, c_pointLight[i].outerRadius, dist);
-
-        accum += c_pointLight[i].lightColor * ((c_diffuseColor * nDotL + c_specularColor * spec) * att);
-    }
-    float4 tex = DiffuseTexture.Sample(DiffuseSampler, pIn.uv);
-    return float4(accum * tex.rgb, tex.a);
-}`
-        },
-      ]
+      title: "Custom Game Engine",
+      subtitle: "C++ · HLSL · SDL · ImGUI",
+      repo: "https://github.com/joshua11805/customEngine",
+      team: "Solo",
+      steps: []
     }
   };
+
+  // ─── Team Badge Helper ───────────────────────────────────────────────────────
+  function formatTeam(value) {
+    if (!value) return '';
+    return value.trim().toLowerCase() === 'solo' ? 'Solo' : `Team · ${value.trim()}`;
+  }
+
+  function teamBadgeHTML(value) {
+    const text = formatTeam(value);
+    return text ? `<span class="team-badge">${text}</span>` : '';
+  }
 
   // ─── Project Cards ──────────────────────────────────────────────────────────
   const cards = document.querySelectorAll('.project-card');
   const modal = document.getElementById('project-modal');
   const modalTitle = document.querySelector('#modal-body h3');
+  const modalSubtitle = document.getElementById('modal-subtitle');
   const modalDesc = document.getElementById('modal-description');
   const closeBtn = document.querySelector('.close-btn');
 
@@ -308,7 +59,7 @@ float4 PS(VOut pIn) : SV_TARGET
     const title = card.dataset.title;
     const titleBar = document.createElement('div');
     titleBar.classList.add('project-title-bar');
-    titleBar.textContent = title;
+    titleBar.innerHTML = `<span class="title-text">${title}</span>${teamBadgeHTML(card.dataset.team)}`;
     card.appendChild(titleBar);
   });
 
@@ -327,7 +78,10 @@ float4 PS(VOut pIn) : SV_TARGET
 
   // ─── Standard Modal ─────────────────────────────────────────────────────────
   function openStandardModal(card) {
-    modalTitle.textContent = card.dataset.title || 'No title';
+    modalTitle.innerHTML = `${card.dataset.title || 'No title'}${teamBadgeHTML(card.dataset.team)}`;
+    modalSubtitle.textContent = card.dataset.tech
+      ? card.dataset.tech.split(',').map(t => t.trim()).join(' · ')
+      : '';
     modalDesc.textContent = card.dataset.description || 'No description';
 
     const mediaContainer = document.getElementById('modal-media');
@@ -350,6 +104,18 @@ float4 PS(VOut pIn) : SV_TARGET
              style="width:100%;border-radius:8px;margin-top:1rem;">`;
     }
 
+    const linksContainer = document.getElementById('modal-links');
+    linksContainer.innerHTML = '';
+    if (card.dataset.play) {
+      linksContainer.innerHTML += `<a href="${card.dataset.play}" target="_blank" class="contact-link"><i class="fas fa-play"></i> Play</a>`;
+    }
+    if (card.dataset.github) {
+      linksContainer.innerHTML += `<a href="${card.dataset.github}" target="_blank" class="contact-link"><i class="fab fa-github"></i> GitHub</a>`;
+    }
+    if (card.dataset.steam) {
+      linksContainer.innerHTML += `<a href="${card.dataset.steam}" target="_blank" class="contact-link"><i class="fab fa-steam"></i> Steam</a>`;
+    }
+
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
   }
@@ -370,20 +136,23 @@ float4 PS(VOut pIn) : SV_TARGET
   const walkthroughClose = document.querySelector('.walkthrough-close');
 
   function openWalkthroughModal(data) {
-    document.getElementById('walkthrough-title').textContent = data.title;
+    document.getElementById('walkthrough-title').innerHTML = `${data.title}${teamBadgeHTML(data.team)}`;
     document.getElementById('walkthrough-subtitle').textContent = data.subtitle;
+
+    const repoLink = document.getElementById('walkthrough-repo');
+    if (data.repo) {
+      repoLink.href = data.repo;
+      repoLink.style.display = 'inline-flex';
+    } else {
+      repoLink.style.display = 'none';
+    }
 
     const body = document.querySelector('.walkthrough-body');
     body.innerHTML = '';
 
-    data.steps.forEach((step, i) => {
+    data.steps.forEach((step) => {
       const stepEl = document.createElement('div');
       stepEl.classList.add('walkthrough-step');
-
-      const hasMedia = !!(step.image || step.video);
-      const escapedCode = step.code
-        ? step.code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-        : '';
 
       let mediaHTML = '';
       if (step.video) {
@@ -405,36 +174,14 @@ float4 PS(VOut pIn) : SV_TARGET
       }
 
       stepEl.innerHTML = `
-        <div class="step-header">
-          <span class="step-number">${String(i + 1).padStart(2, '0')}</span>
-          <h4>${step.title}</h4>
-        </div>
-        <div class="step-body ${hasMedia ? '' : 'no-media'}">
-          <div class="step-code">
-            <div class="code-label">CODE</div>
-            <pre><code class="language-cpp">${escapedCode}</code></pre>
-          </div>
-          ${hasMedia ? `
-          <div class="step-right">
-            <div class="step-media">
-              <div class="code-label">RESULT</div>
-              ${mediaHTML}
-            </div>
-            <div class="step-description">
-              <p>${step.description}</p>
-            </div>
-          </div>` : `
-          <div class="step-right no-media-right">
-            <div class="step-description">
-              <p>${step.description}</p>
-            </div>
-          </div>`}
+        <h4>${step.title}</h4>
+        ${mediaHTML ? `<div class="step-media">${mediaHTML}</div>` : ''}
+        <div class="step-description">
+          <p>${step.description}</p>
         </div>
       `;
       body.appendChild(stepEl);
     });
-
-    if (window.Prism) Prism.highlightAllUnder(body);
 
     walkthroughModal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
