@@ -11,9 +11,10 @@
 </head>
 <body>
 
+  <canvas id="splash-canvas"></canvas>
+
   <!-- Splash Section -->
   <header id="splash">
-    <canvas id="splash-canvas"></canvas>
     <div class="splash-content">
       <h1>Joshua Shin</h1>
       <p>Software Engineer / Technical Artist</p>
@@ -25,10 +26,12 @@
     <div class="about-container">
       <div class="about-text">
         <h2>About Me</h2>
-        <p>My name is Joshua Shin. I am a senior studying Computer Science Games at USC.</p>
-        <p>I've done projects ranging from iOS to VR development, but my ultimate goal is to become a Graphics Engineer!</p>
+        <p>I’m Joshua Shin, a senior at USC studying Computer Science Games. I’m working toward a career in technical art, with a focus on shaders, graphics, and systems that connect gameplay to visuals.</p>
+        <p>I like building tools, improving performance, writing shaders, and helping teams solve whatever technical problem is in front of them.</p>
+        <p>I’ve worked on gameplay systems, VFX, optimization, and custom rendering experiments. The part I enjoy most are the unexpected challenges and overcoming them with creative solutions.</p>
+        <p>Outside of school, I play ... games. I used to play on the USC Varsity Overwatch team, and some of my favorite games are Overwatch, E33, Don't Starve Together, and Cyberpunk 2077.</p>
         <p class="tech-tags">
-          <span>C++/C#</span><span>Unity/Unreal Engine</span><span>HLSL/GLSL/ShaderGraph</span><span>Git/Perforce</span><span>Xcode/SwiftUI</span>
+          <span>C++/C#</span><span>Unity/Unreal Engine</span><span>HLSL/GLSL/ShaderGraph</span><span>Git/Perforce</span><span>VFX Graph / Niagara</span>
         </p>
       </div>
     </div>
@@ -36,119 +39,70 @@
 
   <!-- Projects Section -->
   <section id="projects">
-    <h2>Projects</h2>
+    <h2>Recent Projects</h2>
     <div class="project-list">
 
-      <div class="project-card"
+       <a class="project-card"
+         href="project.html?project=drenched"
            data-title="Drenched"
            data-img="images/drenched.jpg"
-           data-description="A 3D narrative game about a struggling artist. I worked as an Engineer and Technical Artist: building tooling for design and art pipelines, profiling and optimizing performance, creating custom shaders and visual effects, and refactoring/debugging various systems such as gameplay progression mechanics."
+           data-description="A 3D narrative game about a struggling artist. I worked as an Engineer and Technical Artist: building tooling for design and art pipelines, profiling and optimizing performance, creating custom shaders and visual effects, and refactoring/debugging various systems such as gameplay progression mechanics. Expected to Release Mid-October 2026."
            data-tech="Unity, C#, Shader Graph, VFX Graph, Unity Profiler"
            data-steam="https://store.steampowered.com/app/4597820/DRENCHED/"
-           data-team="20-30">
+           data-team="20-30"
+           data-skills="C#, Unity, ShaderGraph, HLSL, VFX Graph">
         <img src="images/drenched.jpg" alt="Drenched Screenshot">
         <div class="project-info">
           <h3>Drenched</h3>
-          <p>A 3D Narrative game about a struggling artist.</p>
+          <p>Engineer / Technical Artist</p>
         </div>
-      </div>
+       </a>
 
-      <div class="project-card"
-           data-title="Custom Game Engine"
-           data-img="images/customEngine.png"
-           data-walkthrough="engine"
-           data-team="Solo">
-        <img src="images/customEngine.png" alt="Custom Game Engine Screenshot">
+       <a class="project-card"
+         href="project.html?project=resolution"
+           data-title="Resolution"
+           data-img="images/ResolutionLogo.png"
+           data-team="20-30"
+           data-skills="Unity, C#, HLSL">
+        <img src="images/ResolutionLogo.png" alt="Resolution logo">
         <div class="project-info">
-          <h3>Custom Game Engine</h3>
-          <p>A Game Engine built from scratch using SDL with a full rendering pipeline including lighting and shading.</p>
+          <h3>Resolution</h3>
+          <p>Gameplay/Systems Engineer</p>
         </div>
-      </div>
+       </a>
 
-      <div class="project-card"
-           data-title="BMW Racing Demo (Unity)"
-           data-img="images/BMW Racing Demo.png"
-           data-description="My first real project done in Unity. The assignment was to create a brand demo, so we chose a BMW driving experience, where users drive around and collect parts of the logo to finish the demo. The project includes a minimap in the top left corner of the screen which players can use to navigate. The movement includes complex driving mechanis and engine audio integration and includes drifting."
-           data-team="3">
-        <img src="images/BMW Racing Demo.png" alt="BMW Racing Demo">
+       <a class="project-card"
+         href="project.html?project=dreamcatchers"
+           data-title="DreamCatchers"
+           data-img="images/DreamCatcherLogo.png"
+           data-team="50-60"
+           data-skills="Unreal Engine 5, Material Graph, Blueprints">
+        <img src="images/DreamCatcherLogo.png" alt="DreamCatchers logo">
         <div class="project-info">
-          <h3>BMW Racing Demo</h3>
-          <p>A gamified brand demo built in Unity.</p>
+          <h3>DreamCatchers</h3>
+          <p>Technical Artist</p>
         </div>
-      </div>
+       </a>
 
-      <div class="project-card"
+       <a class="project-card"
+         href="project.html?project=drive-horizon"
            data-title="Drive Horizon"
            data-img="images/RoadToNowhere.png"
            data-description="A driving experience built with Three.js and custom GLSL shaders."
            data-tech="JavaScript, Three.js, GLSL"
            data-play="https://joshua11805.github.io/three.js-Testing/"
            data-github="https://github.com/joshua11805/three.js-Testing"
-           data-team="Solo">
+           data-team="Solo"
+           data-skills="Three.js, JavaScript, Vite, GLSL">
         <img src="images/RoadToNowhere.png" alt="Drive Horizon Screenshot">
         <div class="project-info">
           <h3>Drive Horizon</h3>
-          <p>A driving experience built with Three.js and custom GLSL shaders.</p>
+          <p>Software Engineer</p>
         </div>
-      </div>
-
-      <div class="project-card"
-           data-title="Portal (C++)"
-           data-img="images/Lab10.png"
-           data-walkthrough="portal"
-           data-team="Solo">
-        <img src="images/Lab10.png" alt="Portal Screenshot">
-        <div class="project-info">
-          <h3>Portal</h3>
-          <p>A 3D Portal clone built in C++ with SDL3, featuring cross-portal rendering, matrix math, and JSON level loading.</p>
-        </div>
-      </div>
-
-      <div class="project-card"
-           data-title="Shape Shifters (Unity)"
-           data-img="images/Shape Shifters.png"
-           data-walkthrough="shapeshifters"
-           data-team="2">
-           <img src="images/Shape Shifters.png" alt="Shape Shifters Screenshot">
-        <div class="project-info">
-          <h3>Shape Shifters</h3>
-          <p>A class project built in Unity.</p>
-        </div>
-      </div>
+       </a>
 
     </div>
   </section>
-
-  <!-- Standard Modal (for projects without walkthrough) -->
-  <div id="project-modal" class="modal">
-    <div class="modal-content">
-      <span class="close-btn">&times;</span>
-      <div id="modal-body">
-        <h3>Project Title</h3>
-        <p id="modal-subtitle"></p>
-        <div id="modal-media"></div>
-        <p id="modal-description">Detailed description goes here...</p>
-        <div id="modal-links" class="modal-links"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Walkthrough Modal -->
-  <div id="walkthrough-modal" class="modal walkthrough-modal">
-    <div class="walkthrough-content">
-      <span class="close-btn walkthrough-close">&times;</span>
-      <div class="walkthrough-header">
-        <h3 id="walkthrough-title">Project Title</h3>
-        <p id="walkthrough-subtitle"></p>
-        <a id="walkthrough-repo" class="repo-link" target="_blank">
-          <i class="fab fa-github"></i> View Source on GitHub
-        </a>
-      </div>
-      <div class="walkthrough-body">
-        <!-- Steps injected here by JS -->
-      </div>
-    </div>
-  </div>
 
   <!-- Contact Section -->
   <section id="contact" class="fade-in">
@@ -162,10 +116,6 @@
         <a href="https://github.com/joshua11805" target="_blank" class="contact-link">
           <i class="fab fa-github"></i>
           github.com/joshua11805
-        </a>
-        <a href="resume.pdf" download="Joshua_Shin_Resume.pdf" class="contact-link">
-          <i class="fas fa-file-download"></i>
-          Download Resume
         </a>
       </div>
     </div>
