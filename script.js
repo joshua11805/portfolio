@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function skillsBadgeHTML(value) {
     if (!value) return '';
-    return value.split(',').map(skill => teamBadgeHTML(skill.trim())).join('');
+    return value.split(',').map(skill => `<span class="team-badge">${skill.trim()}</span>`).join('');
   }
 
   // ─── Project Cards ──────────────────────────────────────────────────────────
