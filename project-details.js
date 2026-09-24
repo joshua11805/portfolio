@@ -16,7 +16,7 @@ const projects = {
         detail: "The simulation is based on the classic 2D wave feedback scheme popularized by Hugo Elias. Each frame, a ping pong pair of render textures reads the previous two height fields, averages the neighboring cells, and subtracts the older frame to give the wave its momentum. A tunable damping term gradually removes energy so ripples fade instead of continuing forever. The height field is stored in a single channel floating point render texture, and footsteps, jumps, and landings disturb it by rendering particle sources from a top down orthographic camera into a separate buffer that is then added to the simulation. A second camera renders only the puddle surfaces into a mask texture. Multiplying the simulation by that mask makes waves die at each puddle's edge, while genuinely overlapping puddles merge into one connected body automatically.",
         extra: "The difficult part was keeping the simulation locked to the world while using one shared camera that follows the player across every puddle in the level. If the camera simply follows the player, the buffer moves with it and the ripples look glued to the character. I solved that by reprojecting the buffer every frame: the shader offsets its sample coordinates by the camera's movement so world space points stay pinned while the simulation texture scrolls underneath them. The camera snaps to whole texel boundaries, making the reprojection a clean copy rather than a constantly resampled image that would smear the ripples over time. Once the simulation is stable, I feed it into the puddle material with Shader Graph so the effect stays readable in the stylized water.",
         media: [
-          { type: "video", src: "videos/RippleVideo.mp4", caption: "A quick look at the ripple system reacting to motion and impact in the puddles." },
+          { type: "video", src: "videos/DrenchedRippleFinal.mp4", caption: "The ripple system reacting to footsteps, jumps, and landings in the puddles." },
           { type: "image", src: "images/RipplePuddleMask.png", alt: "Puddle mask used to confine the ripple simulation", caption: "The puddle mask confines the simulation to connected water surfaces." },
           { type: "image", src: "images/RippleShaderGraph.png", alt: "Ripple shader graph", caption: "The ripple data is integrated into the stylized water shader." }
         ]
@@ -36,12 +36,21 @@ const projects = {
         title: "Profiling & Optimization",
         text: "The game had serious performance problems built into its architecture. Before I joined, nearly the entire game was stored in a single scene. The surface and underwater sections used duplicated assets, and screen space reflections were driving the puddles. The scene was carrying much more geometry, rendering work, and reflection cost than it needed.",
         detail: "Profiling was new to me when I started, so I brought in my Game Engine Programming professor to walk through the process properly instead of guessing at the cause. We used A/B testing: I placed the character at a fixed position so the camera and workload were identical between runs, then toggled specific objects and systems on and off while watching the Unity Profiler. Comparing those runs against a consistent baseline made it possible to isolate actual costs rather than chase symptoms.",
-        extra: "Two major culprits came out of that process. First, the puddle reflections covered the entire scene, which cost more than the effect needed. I changed the render settings so the reflections included only the character layer and skybox. The player still reads clearly in the water, but the render cost is much lower. Second, the single scene kept both the surface and underwater worlds active even though the player could only be in one at a time. My first instinct was occlusion culling, but testing showed that its CPU overhead was not worth it for this layout. Instead, I wrote a form based switch that enables the surface world in Brie form and the underwater world in fish form. This was the biggest performance win, raising the frame rate by [X] FPS. I am still working with the art director on shadow distance, light settings, and render scale, since each one trades performance for visual quality.",
+        extra: "Two major culprits came out of that process. First, the puddle reflections covered the entire scene, which cost more than the effect needed. I changed the render settings so the reflections included only the character layer and skybox. The player still reads clearly in the water, but the render cost is much lower. Second, the single scene kept both the surface and underwater worlds active even though the player could only be in one at a time. My first instinct was occlusion culling, but testing showed that its CPU overhead was not worth it for this layout. Instead, I wrote a form based switch that enables the surface world in Brie form and the underwater world in fish form. This was the biggest performance win, cutting draw calls and scene geometry by 30 to 40 percent, depending on whether the surface or underwater world is active. I am still working with the art director on shadow distance, light settings, and render scale, since each one trades performance for visual quality.",
         media: [
-          { type: "image", src: "images/Surface_Unoptimized.png", alt: "Surface world before optimization", caption: "Surface world before the WorldForm optimization." },
-          { type: "image", src: "images/SurfaceOptimized.png", alt: "Surface world after optimization", caption: "Surface world after the WorldForm optimization." },
+          { type: "image", src: "images/SurfaceOptimized.png", alt: "Surface world before optimization", caption: "Surface world before the WorldForm optimization." },
+          { type: "image", src: "images/Surface_Unoptimized.png", alt: "Surface world after optimization", caption: "Surface world after the WorldForm optimization." },
           { type: "image", src: "images/Underwater_Unoptimized.png", alt: "Underwater world before optimization", caption: "Underwater world before the WorldForm optimization." },
           { type: "image", src: "images/UnderwaterOptimized.png", alt: "Underwater world after optimization", caption: "Underwater world after the WorldForm optimization." }
+        ]
+      },
+      {
+        title: "Tools",
+        text: "I built a Level Skip tool after noticing that the team often had to replay the game from the beginning just to test a later section. The tool moves both the fish and Brie to the correct starting position for each level and provides an easy way to enable every mechanic without completing the tutorial first.",
+        detail: "I also created a Material Replacer tool while updating the materials on a large group of fence objects with a new material built from my dissolve shader. Replacing each material by hand would have been tedious and easy to get wrong, so I wrote a script that takes a parent object, finds every instance of a selected material beneath it, and swaps those instances to a new material. Both tools reduced repetitive setup work and gave the team more time to test the parts of the game that mattered.",
+        media: [
+          { type: "video", src: "videos/LevelSkipTool.mp4", caption: "The Level Skip tool moves the player to a level's starting position and enables its mechanics for testing." },
+          { type: "video", src: "videos/Material Replacer Demo.mp4", caption: "The Material Replacer tool swaps selected materials across a parent object's hierarchy." }
         ]
       },
       {
@@ -122,7 +131,7 @@ const projects = {
     team: "Solo",
     heroImage: "images/RoadToNowhere.png",
     heroAlt: "Drive Horizon screenshot",
-    description: "A fast driving browser prototype built in Three.js with responsive controls, a stylized world, and a strong sense of motion. Disclaimer: I did not create the car model or the background music.",
+    description: "A fast driving browser prototype built in Three.js with responsive controls, a stylized world, and a strong sense of motion. Disclaimer: I did not create the car model or the background music. Requires Graphics Acceleration in browser settings to be enabled.",
     links: [
       { label: "Play", href: "https://joshua11805.github.io/three.js-Testing/", icon: "fas fa-play" },
       { label: "GitHub", href: "https://github.com/joshua11805/three.js-Testing", icon: "fab fa-github" }

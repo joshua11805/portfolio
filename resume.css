@@ -1,0 +1,115 @@
+@page {
+  size: letter;
+  margin: 0.42in;
+}
+
+:root {
+  color: #111827;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 9.2pt;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #e5e7eb;
+}
+
+.resume {
+  width: 8.5in;
+  min-height: 11in;
+  margin: 1rem auto;
+  padding: 0.42in;
+  background: #fff;
+}
+
+.resume-header {
+  text-align: center;
+  border-bottom: 1.5px solid #111827;
+  padding-bottom: 0.12in;
+  margin-bottom: 0.13in;
+}
+
+h1 {
+  margin: 0;
+  font-size: 20pt;
+  letter-spacing: 0.3px;
+}
+
+.resume-header p {
+  margin: 0.04in 0 0;
+  font-size: 8.7pt;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+section {
+  margin-top: 0.105in;
+}
+
+h2 {
+  margin: 0 0 0.045in;
+  padding-bottom: 0.02in;
+  border-bottom: 0.8px solid #6b7280;
+  font-size: 10.3pt;
+  letter-spacing: 0.45px;
+  text-transform: uppercase;
+}
+
+p {
+  margin: 0.025in 0;
+  line-height: 1.2;
+}
+
+.compact {
+  line-height: 1.25;
+}
+
+.entry-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.2in;
+  margin-top: 0.045in;
+  line-height: 1.15;
+}
+
+.entry-heading span:last-child {
+  white-space: nowrap;
+  text-align: right;
+}
+
+ul {
+  margin: 0.025in 0 0.065in 0.19in;
+  padding: 0;
+}
+
+li {
+  margin: 0.018in 0;
+  padding-left: 0.02in;
+  line-height: 1.18;
+}
+
+@media screen {
+  .resume {
+    box-shadow: 0 8px 24px rgba(17, 24, 39, 0.18);
+  }
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+
+  .resume {
+    width: auto;
+    min-height: auto;
+    margin: 0;
+    padding: 0;
+  }
+}
